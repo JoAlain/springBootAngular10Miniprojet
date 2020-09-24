@@ -1,0 +1,41 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h2>Liste Produit</h2>
+    </div>
+    <div class="panel-body">
+        <div style="width: 800px;">
+            <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="nom">Nom</label>
+                <input type="text" class="form-control" formControlName="nom" id="nom" required >
+                <label for="code">Code</label>
+                <input type="text" class="form-control" formControlName="code" id="code" required >
+              </div>
+          
+              <button type="submit" class="btn btn-success">Rechercher</button>
+            </form>
+          </div>
+        <table class="table table-striped">
+        <thead>
+            <tr>
+            <th>Nom</th>
+            <th>Code</th>
+            <th>Date de validité</th>
+            <th>Prix de vente</th>
+            <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let produit of produits | async">
+            <td>{{produit.nom}}</td>
+            <td>{{produit.code}}</td>
+            <td>{{produit.validite}}</td>
+            <td>{{produit.prix}}</td>
+            <td><button (click)="deleteProduit(produit.id)" class="btn btn-danger">Delete</button>
+                <button (click)="produitDetails(produit.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>

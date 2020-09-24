@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -19,9 +20,18 @@ public class ProduitController {
     @Autowired
     private ProduitRepository produitRepository;
 
+
     @GetMapping("/produits")
     public List<Produit> getAllProduits() {
         return produitRepository.findAll();
+    }
+
+    @RequestMapping(value = "/produits", method = RequestMethod.POST, produces = "application/json")
+    public List<Produit> getAllProduits(@RequestParam Map<String, String> requestParams) {
+        if(requestParams.isEmpty())return produitRepository.findAll();
+        String name = requestParams.get("name") != null && requestParams.get("name").compareToIgnoreCase("") != 0 ? requestParams.get("name") : "%";
+        String code = requestParams.get("code") != null && requestParams.get("code").compareToIgnoreCase("") != 0? requestParams.get("code") : "%";
+        return produitRepository.findByNomLikeAndCodeLike(name, code);
     }
 
     @GetMapping("/produits/{id}")
@@ -32,8 +42,9 @@ public class ProduitController {
         return ResponseEntity.ok().body(produit);
     }
 
-    @PostMapping("/produits")
+    @PostMapping("/add")
     public Produit createProduit(@Valid @RequestBody Produit produit) {
+        System.out.println(produit.toString());
         return produitRepository.save(produit);
     }
 
