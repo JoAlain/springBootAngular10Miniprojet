@@ -1,3 +1,5 @@
+CREATE database springangular;
+
 DROP TABLE IF EXISTS produit;
 
 CREATE TABLE `produit` (
